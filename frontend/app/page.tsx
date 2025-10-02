@@ -5,29 +5,36 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "./Context";
 import Link from "next/link";
 import Sidebar from "./components/sidebar";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
 
- const {objfunc, formobj, skillval, addskill, languageval, addlanguages,
-        hobbiesval, addhobbies, jobspecsfunc, jobspecs, skillfunc,
-        langfunc, hobbyfunc, submitfunc, data, acadmeicinfo, count, academicfunc, academicobj,
-      addbtn, addemployment, editrecord, setimage,
-    openreadmore}: any = useContext(AppContext)
+ const {formobj, storeinDatabase}: any = useContext(AppContext)
 
-    useEffect(()=>{
+    // useEffect(()=>{
 
-      localStorage.setItem('resumeobj', JSON.stringify(null))
-      // localStorage.setItem('resumeobj', null)
+    //   localStorage.setItem('resumeobj', JSON.stringify(null))
+    //   // localStorage.setItem('resumeobj', null)
 
-    }, [])
+    // }, [])
+
+    const router = useRouter()
+
+    const handleCVCreation = ()=>{
+
+      localStorage.setItem('objectId', '')
+      storeinDatabase()
+      router.push('/personalinfo')
+
+    }
+
 
   return (
 
     <div className="w-full text-white gap-10 min-h-screen bg-[#007A84] flex flex-col py-20 items-center justify-center">
         <h2 className="text-5xl">Ready to Build Your CV?</h2>
-        <Link href={'/personalinfo'}>
-          <button className="border px-10 h-14 text-xl cursor-pointer">START</button>
-        </Link>
+        <button onClick={handleCVCreation} className="border px-10 h-14 text-xl cursor-pointer">START</button>
+   
 
         {/* <div className="w-full min-h-50 px-20 flex flex-wrap justify-between gap-3">
           <div className="h-50 w-40 bg-white text-black border px-3 rounded flex flex-col items-center justify-center gap-2 py-2">

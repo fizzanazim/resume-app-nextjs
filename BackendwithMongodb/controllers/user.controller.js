@@ -12,19 +12,60 @@ const PostCvData = async (req, res)=>{
 
 }
 
-const GetCvData = async(_, res)=>{
+const GetCvData = async(req, res)=>{
 
-    let data = await userSchema.find()
-    res.send(data)
-
-}
-
-const GetObjDataFunc = async(req, res)=>{
-
-    let userid  = req.params.id
-    let data = await userSchema.findOne({_id:userid})
-    res.send({data: data, success: true})
+    let cv = await userSchema.findOne({_id: req.params.objectId})
+    res.send({cv:cv, success:true})
 
 }
 
-export { PostCvData, GetCvData, GetObjDataFunc };
+const UpdateJob = async(req, res)=>{
+
+    await userSchema.findOneAndUpdate(
+        {_id: req.params.userid},
+        {$set: {job: req.body}},
+        {new: true}
+    )
+
+    res.send({success: true})
+
+}
+
+const UpdateAcademic = async(req, res)=>{
+
+    await userSchema.findOneAndUpdate(
+        {_id: req.params.userid},
+        {$set: {acadmeic: req.body}},
+        {new: true}
+    )
+
+    res.send({success: true})
+
+}
+
+const UpdateIntro = async(req, res)=>{
+
+    await userSchema.findOneAndUpdate(
+        {_id: req.params.userid},
+        {$set: {intro: req.body}},
+        {new: true}
+    )
+
+    res.send({success: true})
+
+}
+
+const UpdatePersonal = async(req, res)=>{
+
+    await userSchema.findOneAndUpdate(
+        {_id: req.params.userid},
+        {$set: {personal: req.body}},
+        {new: true}
+    )
+
+    res.send({success: true})
+
+}
+
+export { PostCvData, GetCvData, UpdateJob, UpdateAcademic, 
+    UpdateIntro, UpdatePersonal };

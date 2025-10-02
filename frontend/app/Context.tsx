@@ -27,12 +27,38 @@ const Context = ({
     const [editeduindex, setediteduindex]: any = useState(-1)
     const [editeduelement, setediteduelement]: any = useState(null)
     const [dataobj, setdataobj]: any = useState(null)
+    const [objectId, setobjectId]: any = useState(localStorage.getItem('objectId') || '')
+    console.log(objectId, 'obje');
+    
+
+    useEffect(() => {
+        
+        const getexisitngcv = async ()=>{
+            
+            let res = await axios.get(`http://localhost:2006/api/get-cv-data/${objectId}`)
+
+            if(res.data.success){
+
+                setformobj(res.data.cv)
+
+            }
+            
+        }
+
+        if(objectId!=''){
+
+            getexisitngcv()
+
+        }
+
+    }, [objectId])
+    
     
 
     const sendpersonalinfo = (personalobj:any)=>{
 
-        setformobj({...formobj, personal: personalobj})
-       
+        setformobj({...formobj, personal: personalobj})    
+        // storeinDatabase()   
 
     }
 
@@ -74,13 +100,22 @@ const Context = ({
         
         if(formobj.intro!=''){
             
-            storeinDatabase()
+            updateintro()
             console.log('hello');
             
 
         }
 
-    }, [formobj])
+    }, [formobj?.intro])
+
+    useEffect(()=>{ 
+            
+        if(formobj?.personal?.firstname)
+            updatepersonal()
+
+        console.log('hello');
+
+    }, [formobj?.personal])
 
     const storeinDatabase = async ()=>{
 
@@ -91,7 +126,7 @@ const Context = ({
             if(res.data.success){
 
                 console.log(res.data.obj, 'obj'); 
-                setdataobj(res.data.obj)
+                localStorage.setItem('objectId', res.data.obj._id)
 
             }
             else{
@@ -103,6 +138,33 @@ const Context = ({
         }
 
     } 
+
+    const updatepersonal:any = async()=>{
+
+        let res = await axios.patch(`http://localhost:2006/api/update-personal/${localStorage.getItem('objectId')}`, formobj.personal)
+
+    }
+
+    const updatejob:any = async()=>{
+
+        let res = await axios.patch(`http://localhost:2006/api/update-job/${localStorage.getItem('objectId')}`, formobj.job)
+
+    }
+
+    const updateacademic:any = async()=>{
+
+        let res = await axios.patch(`http://localhost:2006/api/update-academic/${localStorage.getItem('objectId')}`, formobj.acadmeic)
+
+    }
+
+    const updateintro:any = async()=>{
+
+        let res = await axios.patch(`http://localhost:2006/api/update-intro/${localStorage.getItem('objectId')}`, formobj.intro)
+        if(res.data.success){
+            setdataobj(res.data.returnuser)
+        }
+
+    }
     
     const sendacademicinfo = (academicobj:any)=>{
 
@@ -354,7 +416,8 @@ const Context = ({
             sendacademicinfo, sendsummaryinfo, editelefunc, dataobj,
             tempindex, editelement, delexperience, editedufunc, editeduelement, editeduindex,
             formobj, jobspecs, acadmeicinfo, count,
-            academicobj, academicfunc, addbtn, addemployment, editrecord, openreadmore
+            academicobj, academicfunc, addbtn, addemployment, editrecord, openreadmore, updatejob,
+            updateacademic, storeinDatabase
         }}>
             {children}
         </AppContext.Provider>

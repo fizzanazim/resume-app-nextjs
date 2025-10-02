@@ -10,7 +10,7 @@ import axios from 'axios';
 
 const Personalinfo = () => {
 
-  const {sendpersonalinfo, screen}:any = useContext(AppContext)
+  const {sendpersonalinfo, screen, formobj}:any = useContext(AppContext)
 
   console.log(screen, 'personal');
   
@@ -26,6 +26,16 @@ const Personalinfo = () => {
     user_img: ''
 
   })
+
+  useEffect(()=>{
+
+    if(formobj.personal.firstname!=''){
+
+      setpersonalobj(formobj.personal)
+
+    }
+
+  }, [formobj])
 
   const router = useRouter()
 

@@ -10,13 +10,14 @@ import { useRouter } from 'next/navigation';
 
 const Experience = () => {
 
-    const {formobj, editelefunc, delexperience}:any = useContext(AppContext)
+    const {formobj, editelefunc, delexperience, updatejob}:any = useContext(AppContext)
     console.log(formobj);
 
     const router = useRouter()
 
     const educationpage = ()=>{
 
+        updatejob()
         router.push('/academic-info')
         
     }

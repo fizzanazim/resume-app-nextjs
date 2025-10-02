@@ -11,13 +11,14 @@ import { useRouter } from 'next/navigation';
 
 const EducationSummary = () => {
 
-    const {formobj, editedufunc}:any = useContext(AppContext)
+    const {formobj, editedufunc, updateacademic}:any = useContext(AppContext)
     console.log(formobj);
 
     const router = useRouter()
 
     const summarypage = ()=>{
 
+        updateacademic()
         router.push('/summary')
 
     }
@@ -32,7 +33,7 @@ const EducationSummary = () => {
   return (
     <div className='flex items-center max-h-screen overflow-hidden w-full'>
         <Sidebar screen = {"education"}/>
-        <div className='flex-1 min-h-screen overflow-y-scroll py-10 items-center flex flex-col gap-10'>
+        <div className='flex-1 h-screen overflow-y-scroll py-10 items-center flex flex-col gap-10'>
             <h2 className='text-5xl font-semibold w-160 leading-14'>Education Summary</h2>
             <div className='w-2/4 flex flex-col gap-5'>
             {
